@@ -27,12 +27,12 @@ class MnistModel(nn.Module):
 			)
         # 输出是10个数字
         self.fc = nn.Sequential(
+            nn.Dropout(p=0.3),
             nn.Linear(104 * 2 * 2, 128),
             nn.ReLU(),
             nn.Linear(128, 64),
             nn.ReLU()
         )
-        self.dropout = nn.Dropout(p=0.5)
         self.out = nn.Linear(64, 10)
 
 
@@ -41,12 +41,9 @@ class MnistModel(nn.Module):
         :param input: [batch_size,1,28*28] 我们获得的原始数据的样子，即input[0]=batchsize,input[1]=1,input[2]=28*28
         :return: 
         '''
-        x = self.conv1(input)   
-        x = self.dropout(x)		
+        x = self.conv1(input)   		
         x = self.conv2(x) 
-        x = self.dropout(x)
         x = self.conv3(x)
-        x = self.dropout(x)
         x = self.conv4(x)
         x = x.view(x.size(0), -1)
         x = self.fc(x)
